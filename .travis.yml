@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t sevgib/fib-cal-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run sevgib/fib-cal-test npm test -- --coverage
+
+after_success:
+  - docker build -t sevgib/fibonacci_calculator_client ./client
+  - docker build -t sevgib/fibonacci_calculator_nginx ./nginx
+  - docker build -t sevgib/fibonacci_calculator_server ./server
+  - docker build -t sevgib/fibonacci_calculator_worker ./worker
+  #Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" -- password-stdin
+  #Take those images and push them to docker hub
+  - docker push sevgib/fibonacci_calculator_client
+  - docker push sevgib/fibonacci_calculator_nginx
+  - docker push sevgib/fibonacci_calculator_server
+  - docker push sevgib/fibonacci_calculator_worker
