@@ -9,14 +9,14 @@ script:
   - docker run  -e CI=true sevgib/fib-cal-test npm test -- --coverage
 
 after_success:
-  - docker build -t sevgib/fibonacci_calculator_client ./client
-  - docker build -t sevgib/fibonacci_calculator_nginx ./nginx
-  - docker build -t sevgib/fibonacci_calculator_server ./server
-  - docker build -t sevgib/fibonacci_calculator_worker ./worker
+  - docker build -t sevgib/fib-cal-test_client ./client
+  - docker build -t sevgib/fib-cal-test_nginx ./nginx
+  - docker build -t sevgib/fib-cal-test_server ./server
+  - docker build -t sevgib/fib-cal-test_worker ./worker
   #Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   #Take those images and push them to docker hub
-  - docker push sevgib/fibonacci_calculator_client
-  - docker push sevgib/fibonacci_calculator_nginx
-  - docker push sevgib/fibonacci_calculator_server
-  - docker push sevgib/fibonacci_calculator_worker
+  - docker push sevgib/fib-cal-test_client
+  - docker push sevgib/fib-cal-test_nginx
+  - docker push sevgib/fib-cal-test_server
+  - docker push sevgib/fib-cal-test_worker
